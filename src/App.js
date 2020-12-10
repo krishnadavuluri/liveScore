@@ -1,23 +1,29 @@
 import logo from './logo.svg';
+import React, {useEffect,useState} from 'react';
 import './App.css';
-
-function App() {
+import {Button, Grid} from '@material-ui/core'
+import {getMatches} from './api/Api';
+import Mycard from './components/card';
+import Navbar from './components/Navbar';
+import AlertDialog from './components/dialog';
+function App(){
+  const [matches,setMatch]=useState([]);
+ useEffect(() => {
+   getMatches().then((data)=>{setMatch(data.matches);}).catch()}, []);
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <Navbar></Navbar>  
+      <Grid container>
+       <Grid sm='3'></Grid>
+       <Grid sm='6'>
+       {
+        matches.map((match)=>(
+          <Mycard key={match.unique_id
+           } match={match}/>
+        ))
+      }
+       </Grid>
+      </Grid>
     </div>
   );
 }
